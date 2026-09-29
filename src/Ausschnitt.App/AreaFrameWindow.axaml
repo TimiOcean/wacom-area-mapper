@@ -1,0 +1,13 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Ausschnitt.AreaFrameWindow"
+        WindowDecorations="None"
+        Topmost="True"
+        ShowInTaskbar="False"
+        Focusable="False"
+        IsHitTestVisible="False"
+        Background="Transparent"
+        TransparencyLevelHint="Transparent"
+        WindowStartupLocation="Manual">
+  <Border BorderBrush="#E23D2B" BorderThickness="3" Background="Transparent" />
+</Window>

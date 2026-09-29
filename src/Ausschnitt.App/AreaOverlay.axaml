@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Ausschnitt"
+        x:Class="Ausschnitt.AreaOverlay"
+        Title="Bereich aufziehen"
+        WindowDecorations="None"
+        Topmost="True"
+        ShowInTaskbar="False"
+        Background="Transparent"
+        TransparencyLevelHint="Transparent"
+        Cursor="Cross"
+        WindowStartupLocation="Manual">
+  <Grid>
+    <local:OverlayCanvas x:Name="Surface" />
+    <Border HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Margin="0,28,0,0"
+            Padding="18,12"
+            CornerRadius="999"
+            Background="#F0141210">
+      <TextBlock x:Name="Hint"
+                 Foreground="#F6F1EA"
+                 FontSize="15"
+                 Text="Zieh ein Rechteck. Loslassen übernimmt es. Esc bricht ab. Shift hält 16:10." />
+    </Border>
+  </Grid>
+</Window>

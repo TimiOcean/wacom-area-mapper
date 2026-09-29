@@ -1,0 +1,128 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Ausschnitt.Controls"
+        xmlns:vm="clr-namespace:Ausschnitt.ViewModels"
+        x:Class="Ausschnitt.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="Ausschnitt"
+        Width="980"
+        Height="720"
+        MinWidth="860"
+        MinHeight="640"
+        WindowStartupLocation="CenterScreen"
+        Background="#12110F">
+  <Grid Margin="28,22,28,18" RowDefinitions="Auto,*,Auto">
+    <Grid ColumnDefinitions="Auto,*">
+      <Border Width="42" Height="42" CornerRadius="10" Background="#E23D2B" Margin="0,0,14,0">
+        <Border Margin="13,10,8,14" BorderBrush="#12110F" BorderThickness="2" />
+      </Border>
+      <StackPanel Grid.Column="1" VerticalAlignment="Center">
+        <TextBlock Text="Ausschnitt" FontSize="28" FontWeight="SemiBold" Foreground="#F6F1EA" />
+        <TextBlock Text="Die Stiftfläche des Wacom One nur auf den Bereich legen, den du gerade brauchst."
+                   FontSize="14" Foreground="#B7AA9E" Margin="0,2,0,0" TextWrapping="Wrap" />
+      </StackPanel>
+    </Grid>
+
+    <Grid Grid.Row="1" Margin="0,22,0,12" ColumnDefinitions="1.15*,0.9*" ColumnSpacing="22">
+      <ScrollViewer>
+        <StackPanel Spacing="14">
+          <Border Classes="card" Padding="16" CornerRadius="14" Background="#1C1916" BorderBrush="#3A332C" BorderThickness="1">
+            <StackPanel Spacing="6">
+              <TextBlock Text="Tablett" Foreground="#8A7D72" FontSize="12" />
+              <TextBlock Text="{Binding TabletLine}" Foreground="#F6F1EA" FontSize="16" TextWrapping="Wrap" />
+              <TextBlock Text="{Binding EngineLine}" Foreground="#D9D0C6" FontSize="13" TextWrapping="Wrap" />
+              <TextBlock Text="{Binding AreaLine}" Foreground="#E23D2B" FontSize="14" FontWeight="SemiBold" />
+            </StackPanel>
+          </Border>
+
+          <Border Padding="14,12" CornerRadius="12" Background="#2A2016" IsVisible="{Binding HasBanner}">
+            <StackPanel Spacing="8">
+              <TextBlock Text="{Binding Banner}" TextWrapping="Wrap" Foreground="#F6F1EA" FontSize="13" />
+              <Button Content="Als Administrator neu starten"
+                      Command="{Binding ElevateCommand}"
+                      IsVisible="{Binding NeedsAdmin}"
+                      HorizontalAlignment="Left"
+                      Background="#E23D2B"
+                      Foreground="White"
+                      Padding="12,6" />
+            </StackPanel>
+          </Border>
+
+          <Button Content="Bereich aufziehen"
+                  Command="{Binding PickCommand}"
+                  HorizontalAlignment="Stretch"
+                  HorizontalContentAlignment="Center"
+                  Background="#E23D2B"
+                  Foreground="White"
+                  FontSize="16"
+                  FontWeight="SemiBold"
+                  Padding="0,12"
+                  CornerRadius="10" />
+          <Button Content="Ganzer Bildschirm"
+                  Command="{Binding FullCommand}"
+                  HorizontalAlignment="Stretch"
+                  HorizontalContentAlignment="Center"
+                  Padding="0,10"
+                  CornerRadius="10" />
+
+          <Border Padding="16" CornerRadius="14" Background="#1C1916" BorderBrush="#3A332C" BorderThickness="1">
+            <StackPanel Spacing="10">
+              <DockPanel>
+                <TextBlock Text="Kürzel" VerticalAlignment="Center" Foreground="#B7AA9E" />
+                <Button DockPanel.Dock="Right" Content="Ändern" Command="{Binding HotkeyCommand}" Margin="12,0,0,0" />
+                <TextBlock Text="{Binding HotkeyLabel}" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="#F6F1EA" FontWeight="SemiBold" />
+              </DockPanel>
+              <CheckBox Content="Proportionen halten, Kreise bleiben Kreise" IsChecked="{Binding KeepProportions}" Foreground="#F6F1EA" />
+              <CheckBox Content="Mit Windows starten" IsChecked="{Binding RunAtStartup}" Foreground="#F6F1EA" />
+              <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <StackPanel Spacing="4">
+                  <TextBlock Text="Ausrichtung" Foreground="#8A7D72" FontSize="12" />
+                  <ComboBox ItemsSource="{Binding Orientations}" SelectedItem="{Binding SelectedOrientationLabel}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Spacing="4">
+                  <TextBlock Text="Weg" Foreground="#8A7D72" FontSize="12" />
+                  <ComboBox ItemsSource="{Binding Engines}" SelectedItem="{Binding SelectedEngineLabel}" />
+                </StackPanel>
+              </Grid>
+              <TextBlock Text="Pixel, falls du den Bereich von Hand setzen willst." Foreground="#8A7D72" FontSize="12" />
+              <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
+                <TextBox PlaceholderText="X" Text="{Binding AreaX}" />
+                <TextBox Grid.Column="1" PlaceholderText="Y" Text="{Binding AreaY}" />
+                <TextBox Grid.Column="2" PlaceholderText="Breite" Text="{Binding AreaWidth}" />
+                <TextBox Grid.Column="3" PlaceholderText="Höhe" Text="{Binding AreaHeight}" />
+              </Grid>
+              <Button Content="Diese Pixel übernehmen" Command="{Binding ManualCommand}" HorizontalAlignment="Left" />
+            </StackPanel>
+          </Border>
+
+          <TextBlock Text="{Binding DetailLine}" Foreground="#B7AA9E" FontSize="13" TextWrapping="Wrap" />
+        </StackPanel>
+      </ScrollViewer>
+
+      <Grid Grid.Column="1" RowDefinitions="*,Auto,Auto">
+        <Border CornerRadius="14" BorderBrush="#3A332C" BorderThickness="1" ClipToBounds="True">
+          <local:MonitorPreview Screens="{Binding Screens}"
+                                Area="{Binding ActiveArea}"
+                                PenVisible="{Binding PenVisible}"
+                                PenX="{Binding PenX}"
+                                PenY="{Binding PenY}"
+                                Revision="{Binding Revision}" />
+        </Border>
+        <TextBlock Grid.Row="1" Margin="0,12,0,8" Foreground="#B7AA9E" FontSize="13"
+                   Text="Zieh auf der Fläche, als wäre sie das Tablett." />
+        <Border x:Name="TabletPad" Grid.Row="2" Height="150" CornerRadius="12"
+                Background="#1C1916" BorderBrush="#E23D2B" BorderThickness="1" ClipToBounds="True">
+          <Canvas>
+            <TextBlock Text="Stiftfläche 16:10" Canvas.Left="12" Canvas.Top="8" Foreground="#8A7D72" FontSize="12" />
+            <Ellipse x:Name="PadDot" Width="12" Height="12" Fill="#F6F1EA" Stroke="#E23D2B" StrokeThickness="2" IsVisible="False" />
+          </Canvas>
+        </Border>
+      </Grid>
+    </Grid>
+
+    <Border Grid.Row="2" Padding="0,8,0,0" BorderBrush="#2A2622" BorderThickness="0,1,0,0">
+      <TextBlock x:Name="LogLine" Margin="0,8,0,0" Foreground="#8A7D72" FontSize="12" TextTrimming="CharacterEllipsis"
+                 Text="Schließen legt Ausschnitt in die Taskleiste. Beenden steht dort im Menü." />
+    </Border>
+  </Grid>
+</Window>
